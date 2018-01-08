@@ -1,0 +1,15 @@
+{
+  "name": "pyfiles",
+  "version": "1.0.0",
+  "description": "catch the location of a file using the format or not. results in an array.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novanandriyono/pyfiles"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Novan Andriyono <evelynradtya@gmail.com>",
+  "license": "UNLICENSED"
+}
