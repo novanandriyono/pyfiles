@@ -1,6 +1,6 @@
 {
   "name": "pyfiles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "catch the location of a file using the format or not. results in an array.",
   "main": "index.js",
   "repository": {
