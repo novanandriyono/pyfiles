@@ -42,7 +42,7 @@ var file = [];
 			var format = parts[parts.length - 1];
 			if((fs.statSync(dirstat1).isFile()) && (format == formatFile) && (exceptThis(dirstat1,except) === true)){
 			  	file.push(dirstat1);
-			}else if(fs.statSync(dirstat1).isDirectory()){
+			}else if((fs.statSync(dirstat1).isDirectory()) && (exceptThis(dirstat1,except) === true)){
 				fromDir1(dirstat1,formatFile)
 			}else{
 				// :(sad
@@ -57,9 +57,10 @@ var file = [];
 			var dirstat1 = dir + '/' + dir1[i];
 			if((fs.statSync(dirstat1).isFile()) && (exceptThis(dirstat1,except) === true)){
 			  	file.push(dirstat1);
-			}else if(fs.statSync(dirstat1).isDirectory() && (exceptThis(dirstat1,except) === true)){
+			}
+			if(fs.statSync(dirstat1).isDirectory() && (exceptThis(dirstat1,except) === true)){
 				file.push(dirstat1);
-				fromDirAll(dirstat1);
+				fromDirAll(dirstat1,except);
 			}else{
 				// :(sad
 			}
@@ -102,7 +103,7 @@ var file = [];
 			var dirstat1 = dir + '/' + dir1[i];
 			if((dirstat1.indexOf(formatFile) !== -1) && (exceptThis(dirstat1,except) === true)){
 			  	file.push(dirstat1);
-			}else if(fs.statSync(dirstat1).isDirectory()){
+			}else if((fs.statSync(dirstat1).isDirectory()) && (exceptThis(dirstat1,except) === true)){
 				searchFile(dirstat1,formatFile);
 			}else{
 				// :(sad
