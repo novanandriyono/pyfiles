@@ -24,6 +24,8 @@ var file = [];
 			results = fromDirAll(dir, except);
 		}else if(formatFile === 'dir'){
 			results = justDir(dir, except);
+		}else if(formatFile === 'file'){
+			results = justFile(dir, except);
 		}else if(srcFiles === true){
 			results = searchFile(dir, formatFile, except);
 		}else{
@@ -72,6 +74,21 @@ var file = [];
 			if((fs.statSync(dirstat1).isDirectory()) && (exceptThis(dirstat1,except) === true)){
 			  	file.push(dirstat1);
 			  	justDir(dirstat1);
+			}else{
+				// :(sad
+			}
+		}
+		return file;
+	}
+
+	function justFile(dir, except){
+		var dir1 = fs.readdirSync(dir);
+		for(var i = 0, len1 = dir1.length; i < len1; i++){
+			var dirstat1 = dir + '/' + dir1[i];
+			if((fs.statSync(dirstat1).isFile()) && (exceptThis(dirstat1,except) === true)){
+			  	file.push(dirstat1);
+			}else if((fs.statSync(dirstat1).isDirectory()) && (exceptThis(dirstat1,except) === true)){
+				justFile(dirstat1,except);
 			}else{
 				// :(sad
 			}
