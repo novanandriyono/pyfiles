@@ -64,7 +64,7 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 
 	function filters(str){
 		if(_t === 'N'){
-			return false;
+			return true;
 		}
 		if(_v.length > 0){
 			if(_v.length === 1){
@@ -72,7 +72,7 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 			}
 			return typeFilters(str);
 		}
-		return false;	
+		return true;
 	}
 
 	function typeFiltersItem(str,i = 0){
