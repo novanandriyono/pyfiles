@@ -1,15 +1,16 @@
 {
   "name": "pyfiles",
   "version": "1.0.6",
-  "description": "catch the location of a file using the format or not. results in an array.",
+  "description": "get file or folder locations using 'fs', results by array.",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/novanandriyono/pyfiles"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pyfiles" :"node pyfilesCli"
   },
   "author": "Novan Andriyono <evelynradtya@gmail.com>",
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
