@@ -1,6 +1,6 @@
 {
   "name": "pyfiles",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "get file or folder locations using 'fs', results by array.",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pyfiles" :"node pyfilesCli"
+    "pyfiles": "node pyfilesCli"
   },
   "author": "Novan Andriyono <evelynradtya@gmail.com>",
   "license": "MIT"
