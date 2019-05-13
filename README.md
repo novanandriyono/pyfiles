@@ -13,8 +13,8 @@ npm install pyfiles
 |b| recursive boolean (true or false), false by default |
 |c| filter name, type N by default | 
 |d|  filter items. empty array by default |
-|e| item result |
-|f| item result |
+|e| item result from r |
+|f| item filter from d |
 |g| directory name of e |
 |r| object pyfiles results |
 |r.all| object all file and directory from r|
@@ -22,7 +22,11 @@ npm install pyfiles
 |r.dirs| get all directory from r |
 ### Using Require
 ```
-var pyfiles = require('pyfiles');
+consr pyfiles = require('pyfiles');
+const a = 'directory_address';
+const b = true; // recursive
+const c = 'include-extension' // filter type;
+const d = ['php','js'] // f;
 const r = new pyfiles(a,b,c,d);
 
 const all = r.all; // all results
@@ -48,22 +52,24 @@ pyfiles have include,exclude and N filter type name for filtering item result. N
 | Name | Description |
 | ------ | ------ |
 | include-equals | filter e === f |
-| include-dir-equals | filter g + e === f |
+| include-dir-equals | filter e === g + f |
 | include-indexof | filter using indexOf [e.indexOf(f) !== -1] |
-| include-dir-indexof | filter using indexOf [(g + e).indexOf( f ) !== -1] |
+| include-dir-indexof | filter using indexOf [e.indexOf( g + f ) !== -1] |
 | include-indexof-first | filter using indexOf from e first index |
-| include-dir-indexof-first | filter using indexOf from g + e first index |
+| include-dir-indexof-first | filter using indexOf from e first index use g + f |
 | include-regex | filter using match [e.match( f )] |
+| include-extension | filter using path.extname [path.extname(e) === f] |
 ### Filter Exclude
 | Name | Description |
 | ------ | ------ |
 | exclude-equals | filter e === f |
-| exclude-dir-equals | filter g + e === f |
+| exclude-dir-equals | filter e === g + f |
 | exclude-indexof | filter using indexOf [e.indexOf(f) !== -1] |
-| exclude-dir-indexof | filter using indexOf [(g + e).indexOf( f ) !== -1] |
+| exclude-dir-indexof | filter using indexOf [e.indexOf( g + f ) !== -1] |
 | exclude-indexof-first | filter using indexOf from e first index |
-| exclude-dir-indexof-first | filter using indexOf from g + e first index |
+| exclude-dir-indexof-first | filter using indexOf from g + e first index use g + f |
 | exclude-regex | filter using match [e.match( f )] |
+| exclude-extension | filter using path.extname [path.extname(e) === f] |
 ### Filter N
 | Name | Description |
 | ------ | ------ |

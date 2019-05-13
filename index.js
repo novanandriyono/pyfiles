@@ -34,6 +34,7 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 	'include-dir-indexof',
 	'include-indexof-first',
 	'include-dir-indexof-first',
+	'include-extension',
 	'include-regex',
 	'exclude-equals',
 	'exclude-dir-equals',
@@ -41,6 +42,7 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 	'exclude-dir-indexof',
 	'exclude-indexof-first',
 	'exclude-dir-indexof-first',
+	'exclude-extension',
 	'exclude-regex'
 	].includes(_t)?_t:'N'; 
 
@@ -62,133 +64,166 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 		return fs.statSync(str);
 	}
 
-	function filters(str){
+	function typeFiltersItem(str,stat = false,i = 0){
+		if(_t === 'include-equals'){
+			if(str === _v[i]){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'include-dir-equals'){
+			if(str === _vir[i]){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'include-indexof'){
+			if(str.indexOf(_v[i]) !== -1){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'include-dir-indexof'){
+			if(str.indexOf(_vir[i]) !== -1){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'include-indexof-first'){
+			if(str.indexOf(_v[i],0) !== -1){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'include-dir-indexof-first'){
+			if(str.indexOf(_vir[i],0) !== -1){
+				return true;
+			}
+			return false;
+		}
+
+		// EX
+		if(_t === 'exclude-equals'){
+			if(str === _v[i]){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'exclude-dir-equals'){
+			if(str === _vir[i]){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'exclude-indexof'){
+			if(str.indexOf(_v[i]) !== -1){
+				return false;
+			}
+			return true;
+		}
+
+		if(_t === 'exclude-dir-indexof'){
+			if(str.indexOf(_vir[i]) !== -1){
+				return false;
+			}
+			return true;
+		}
+
+		if(_t === 'exclude-indexof-first'){
+			if(str.indexOf(_v[i],0) !== -1){
+				return false;
+			}
+			return true;
+		}
+
+		if(_t === 'exclude-dir-indexof-first'){
+			if(str.indexOf(_vir[i],0) !== -1){
+				return false;
+			}
+			return true;
+		}
+
+		var extname = getext(str);
+		if(_t === 'include-extension'){
+			if(extname === _v[i]  && stat===true){
+				return true;
+			}
+			return false;
+		}
+
+		if(_t === 'exclude-extension'){
+			if(extname === _v[i]  && stat===true){
+				return false;
+			}
+			return true;
+		}
+
+		var match = str.match(_v[i]);
+		
+		if(_t === 'include-regex'){
+			if(match !== null){
+				return true
+			}
+			return false;
+		}
+
+		if(_t === 'exclude-regex'){
+			if(match === null){
+				return true
+			}
+			return false;
+		}
+		// console.error('unknow options filter');
+		return false;
+	}
+	
+	function typeFilters(str,stat=false){
+		for (var i = _v.length - 1; i >= 0; i--) {
+			if(typeFiltersItem(str,stat,i)){
+				return true;
+			}
+		}
+	}
+
+	function filters(str,stat=false){
 		if(_t === 'N'){
 			return true;
 		}
+		
 		if(_v.length > 0){
 			if(_v.length === 1){
-				return typeFiltersItem(str,0);
+				return typeFiltersItem(str,stat,0);
 			}
-			return typeFilters(str);
+			return typeFilters(str,stat);
+	
+			return false;
 		}
+
 		return true;
 	}
 
-	function typeFiltersItem(str,i = 0){
-			if(_t === 'include-equals'){
-				if(str === _v[i]){
-					return true;
+	function getext(str){
+		var extname = path.extname(str);
+		function getextdeep(str){
+			str = getstr(str);
+			function getstr(str){
+				for (var i = str.length - 1; i >= 0; i--) {
+					if(str[i] === '.'){
+						return str.substr(i);
+					}
 				}
-				return false;
+				return '';
 			}
-
-			if(_t === 'include-dir-equals'){
-				if(str === _vir[i]){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'include-indexof'){
-				if(str.indexOf(_v[i]) !== -1){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'include-dir-indexof'){
-				if(str.indexOf(_vir[i]) !== -1){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'include-indexof-first'){
-				if(str.indexOf(_v[i],0) !== -1){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'include-dir-indexof-first'){
-				if(str.indexOf(_vir[i],0) !== -1){
-					return true;
-				}
-				return false;
-			}
-
-			// EX
-			if(_t === 'exclude-equals'){
-				if(str === _v[i]){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'exclude-dir-equals'){
-				if(str === _vir[i]){
-					return true;
-				}
-				return false;
-			}
-
-			if(_t === 'exclude-indexof'){
-				if(str.indexOf(_v[i]) !== -1){
-					return false;
-				}
-				return true;
-			}
-
-			if(_t === 'exclude-dir-indexof'){
-				if(str.indexOf(_vir[i]) !== -1){
-					return false;
-				}
-				return true;
-			}
-
-			if(_t === 'exclude-indexof-first'){
-				if(str.indexOf(_v[i],0) !== -1){
-					return false;
-				}
-				return true;
-			}
-
-			if(_t === 'exclude-dir-indexof-first'){
-				if(str.indexOf(_vir[i],0) !== -1){
-					return false;
-				}
-				return true;
-			}
-
-			var match = str.match(_v[i]);
-			
-			if(_t === 'include-regex'){
-				if(match !== null){
-					return true
-				}
-				return false;
-			}
-
-			if(_t === 'exclude-regex'){
-				if(match === null){
-					return true
-				}
-				return false;
-			}
-		console.error('unknow options filter');
-		return false;
-	}
-
-	
-
-	function typeFilters(str){
-		for (i = _v.length - 1; i >= 0; i--) {
-			if(typeFiltersItem(str,i)){
-				return true;
-			}
+			return str === '' || str === '.'?undefined:str.substr(1);
 		}
-		return false;
+		return extname === '' || extname === '.'?getextdeep(str):extname.substr(1);
 	}
 
 	var all = [];
@@ -199,23 +234,18 @@ function pyfiles(_s,_r=false, _t = 'N',_v = []){
 		
 		fsrs[i] = path.normalize(_s + path.sep + fsrs[i]);
 		
-		var bool = filters(fsrs[i]);
+		var stat = getstat(fsrs[i]).isFile();
 		
-		var stat = getstat(fsrs[i]);
-		
-		if(bool){
-			all.push(fsrs[i])
-		}
-
-		if(stat.isFile() && bool === true){
-			files.push(fsrs[i]);
-		}
-
-		if(stat.isDirectory() && bool === true){
-			dirs.push(fsrs[i]);
+		if(filters(fsrs[i],stat)){
+				all.push(fsrs[i]);
+			if(stat){
+				files.push(fsrs[i]);
+			}else{
+				dirs.push(fsrs[i]);
+			}
 		}
 		
-		if(_r===true && stat.isDirectory()){
+		if(_r===true && stat===false){
 			var newi = new pyfiles(fsrs[i],_r,_t,_v);
 			Array.prototype.push.apply(files,newi.files);
 			Array.prototype.push.apply(dirs,newi.dirs);
